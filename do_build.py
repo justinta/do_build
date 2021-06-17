@@ -1,4 +1,5 @@
 import argparse
+import configparser
 import digitalocean
 import sys
 
@@ -6,12 +7,14 @@ import sys
 from ns1 import NS1
 
 
-DO_TOKEN = ''
-NS1_TOKEN = ''
+config = configparser.ConfigParser()
+config.read('config.ini')
+
+DO_TOKEN = config['digitalocean']['apiKey']
+NS1_TOKEN = config['NS1']['apiKey']
 
 manager = digitalocean.Manager(token=DO_TOKEN)
 api = NS1(apiKey = NS1_TOKEN)
-
 
 
 def parse_args():
