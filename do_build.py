@@ -26,6 +26,7 @@ def parse_args():
 
     return parser.parse_args()
 
+### DO ###
 def create_droplet(droplet_name, size, image='centos-7-x64'):
     '''
     creates droplet
@@ -43,6 +44,16 @@ def create_droplet(droplet_name, size, image='centos-7-x64'):
     return droplet
 
 
+def destroy_droplet(droplet_id):
+    '''
+    destroys a droplet
+    '''
+    droplet = digitalocean.Droplet(id=droplet_id)
+    droplet.destroy()
+
+    return 'droplet destroyed'
+
+### NS1 ###
 def create_ns1_record(droplet_data):
     '''
     Update/create ns1 domain in justinta.com zone
@@ -52,6 +63,15 @@ def create_ns1_record(droplet_data):
     records = api.records()
     records.create(zone.zone, droplet_data.name, 'A', answers=droplet_data.ip_address)
     return 'DNS created'
+
+
+def delete_ns1_record(zone, record):
+    '''
+    delete record in ns1
+    '''
+    records = api.records()
+    records.delete('justinta.com', record)
+    return 'DNS deleted'
 
 
 def create(name, size, image='centos-7-x64'):
@@ -71,13 +91,11 @@ def create(name, size, image='centos-7-x64'):
     print(create_ns1_record(droplet_data))
 
 
-
-
-def delete_ns1_record(zone, record):
+def delete(name):
     '''
-    delete record in ns1
+    Delete droplet and corresponding ns1 record
     '''
-    pass
+    droplet = digitalocean.Droplet
 
 
 def main():
